@@ -20,7 +20,7 @@ from queens.utils.logger_settings import log_init_args
 from queens.utils.process_outputs import process_outputs, write_results
 from queens.visualization.grid_iterator_visualization import GridIteratorVisualization
 
-from .iterator import Iterator
+from ._iterator import Iterator
 
 
 class Grid(Iterator):
