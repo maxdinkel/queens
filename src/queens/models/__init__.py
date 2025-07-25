@@ -17,34 +17,44 @@
 Modules for multi-query mapping of inputs to outputs, such as parameter
 samples to model evaluations.
 """
+from typing import TYPE_CHECKING
 
-from queens.models.adjoint import Adjoint
-from queens.models.bmfmc import BMFMC
-from queens.models.finite_difference import FiniteDifference
-from queens.models.likelihoods.bmf_gaussian import BMFGaussian, BmfiaInterface
-from queens.models.likelihoods.gaussian import Gaussian
-from queens.models.reinforcement_learning.reinforcement_learning import ReinforcementLearning
-from queens.models.simulation import Simulation
-from queens.models.surrogates.bayesian_neural_network import GaussianBayesianNeuralNetwork
-from queens.models.surrogates.gaussian_neural_network import GaussianNeuralNetwork
-from queens.models.surrogates.gaussian_process import GaussianProcess
-from queens.models.surrogates.heteroskedastic_gaussian_process import HeteroskedasticGaussianProcess
-from queens.models.surrogates.jitted_gaussian_process import JittedGaussianProcess
-from queens.models.surrogates.variational_gaussian_process import VariationalGaussianProcess
+from queens.utils.imports import import_class_from_class_module_map
 
-VALID_TYPES = {
-    "simulation_model": Simulation,
-    "bmfmc_model": BMFMC,
-    "gaussian": Gaussian,
-    "bmf_gaussian": BMFGaussian,
-    "bmfia_interface": BmfiaInterface,
-    "differentiable_simulation_model_fd": FiniteDifference,
-    "differentiable_simulation_model_adjoint": Adjoint,
-    "heteroskedastic_gp": HeteroskedasticGaussianProcess,
-    "gp_approximation_gpflow": GaussianProcess,
-    "gaussian_bayesian_neural_network": GaussianBayesianNeuralNetwork,
-    "gp_jitted": JittedGaussianProcess,
-    "gp_approximation_gpflow_svgp": VariationalGaussianProcess,
-    "gaussian_nn": GaussianNeuralNetwork,
-    "reinforcement_learning": ReinforcementLearning,
+if TYPE_CHECKING:
+    from queens.models.adjoint import Adjoint
+    from queens.models.bmfmc import BMFMC
+    from queens.models.finite_difference import FiniteDifference
+    from queens.models.likelihoods.bmf_gaussian import BMFGaussian, BmfiaInterface
+    from queens.models.likelihoods.gaussian import Gaussian
+    from queens.models.reinforcement_learning.reinforcement_learning import ReinforcementLearning
+    from queens.models.simulation import Simulation
+    from queens.models.surrogates.bayesian_neural_network import GaussianBayesianNeuralNetwork
+    from queens.models.surrogates.gaussian_neural_network import GaussianNeuralNetwork
+    from queens.models.surrogates.gaussian_process import GaussianProcess
+    from queens.models.surrogates.heteroskedastic_gaussian_process import (
+        HeteroskedasticGaussianProcess,
+    )
+    from queens.models.surrogates.jitted_gaussian_process import JittedGaussianProcess
+    from queens.models.surrogates.variational_gaussian_process import VariationalGaussianProcess
+
+class_module_map = {
+    "Adjoint": "adjoint",
+    "BMFMC": "bmfmc",
+    "FiniteDifference": "finite_difference",
+    "BMFGaussian": "likelihoods.bmf_gaussian",
+    "BmfiaInterface": "likelihoods.bmf_gaussian.bmfia_interface",
+    "Gaussian": "likelihoods.gaussian",
+    "ReinforcementLearning": "reinforcement_learning.reinforcement_learning",
+    "Simulation": "simulation",
+    "GaussianBayesianNeuralNetwork": "likelihoods.bayesian_neural_network",
+    "GaussianNeuralNetwork": "likelihoods.gaussian_neural_network",
+    "GaussianProcess": "surrogates.gaussian_process",
+    "HeteroskedasticGaussianProcess": "surrogates.heteroskedastic_gaussian_process",
+    "JittedGaussianProcess": "surrogates.jitted_gaussian_process",
+    "VariationalGaussianProcess": "surrogates.variational_gaussian_process",
 }
+
+
+def __getattr__(name):
+    return import_class_from_class_module_map(name, class_module_map, __name__)

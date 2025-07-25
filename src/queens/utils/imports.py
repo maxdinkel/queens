@@ -93,31 +93,18 @@ def get_module_class(module_options, valid_types, module_type_specifier="type"):
     return module_class
 
 
-class LazyLoader:
-    """Lazy loader for modules that take long to load.
+def import_class_from_class_module_map(name, class_module_map, directory):
+    """Import class from class_module_map.
 
-    Inspired from https://stackoverflow.com/a/78312617
+    Args:
+        name (str): Name of the class.
+        class_module_map (dict): Class to module mapping.
+        directory (str): Directory of module.
+
+    Returns:
+        class (obj): Class object.
     """
-
-    def __init__(self, module_name):
-        """Initialize the loader.
-
-        Args:
-            module_name (str): name of the module to be imported
-        """
-        self._module_name = module_name
-        self._module = None
-
-    def __getattr__(self, attr):
-        """Get attribute.
-
-        Args:
-            attr (str): Attribute name
-
-        Returns:
-            obj: attribute
-        """
-        if self._module is None:
-            self._module = importlib.import_module(self._module_name)
-
-        return getattr(self._module, attr)
+    if name in class_module_map:
+        module = importlib.import_module(f"{directory}.{class_module_map[name]}")
+        return getattr(module, name)
+    raise AttributeError(f"Directory {directory} has no module {name}!")
