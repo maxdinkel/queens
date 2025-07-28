@@ -19,17 +19,18 @@ input file workflow.
 """
 
 import logging
-import sys
+
+# import sys
 import time
 
-from queens.global_settings import GlobalSettings
-from queens.utils.cli import get_cli_options, print_greeting_message
-from queens.utils.from_config_create import from_config_create_iterator
-from queens.utils.io import load_input_file
+# from queens.global_settings import GlobalSettings
+# from queens.utils.cli import get_cli_options, print_greeting_message
+
+# from queens.utils.from_config_create import from_config_create_iterator
+# from queens.utils.io import load_input_file
 
 _logger = logging.getLogger(__name__)
-
-
+'''
 def run(input_file, output_dir, debug=False):
     """Do a QUEENS run.
 
@@ -72,6 +73,7 @@ def run(input_file, output_dir, debug=False):
 
         # Perform analysis
         run_iterator(my_iterator, global_settings)
+'''
 
 
 def run_iterator(iterator, global_settings):
@@ -107,6 +109,7 @@ def run_iterator(iterator, global_settings):
     _logger.info("")
 
 
+'''
 def main():
     """Main function."""
     # The first argument is the file name
@@ -123,3 +126,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''

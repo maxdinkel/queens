@@ -16,6 +16,7 @@
 
 import importlib.util
 import logging
+import re
 import sys
 from pathlib import Path
 
@@ -93,18 +94,60 @@ def get_module_class(module_options, valid_types, module_type_specifier="type"):
     return module_class
 
 
-def import_class_from_class_module_map(name, class_module_map, directory):
+def import_class_from_class_module_map(name, class_module_map):
     """Import class from class_module_map.
 
     Args:
         name (str): Name of the class.
         class_module_map (dict): Class to module mapping.
-        directory (str): Directory of module.
 
     Returns:
         class (obj): Class object.
     """
     if name in class_module_map:
-        module = importlib.import_module(f"{directory}.{class_module_map[name]}")
+        module = importlib.import_module(class_module_map[name])
         return getattr(module, name)
-    raise AttributeError(f"Directory {directory} has no module {name}!")
+    raise AttributeError
+
+
+def extract_type_checking_imports(file_path):
+    """Extract imports inside TYPE_CHECKING blocks from file.
+
+    Args:
+        file_path (str): Path to the file
+
+    Returns:
+        mapping (dict): A dict mapping class names to their source modules.
+    """
+    inside_type_checking = False
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        import_text = ""
+
+        for line in file:
+            stripped = line.strip()
+
+            # Detect start of TYPE_CHECKING block
+            if stripped.replace(" ", "") == "ifTYPE_CHECKING:":
+                inside_type_checking = True
+                continue
+
+            if inside_type_checking:
+                # Detect end of block (naively assumes dedent)
+                if len(line.lstrip()) == len(line):
+                    inside_type_checking = False
+                    continue
+                import_text += stripped
+
+        mapping = {}
+        import_statements = import_text.split("from")[1:]
+        for import_statement in import_statements:
+            module, class_names = import_statement.split("import")
+            module = module.strip()
+            if not module.startswith("queens."):
+                raise AttributeError(f"Please provide an absolute path for the '{module}' module.")
+            class_names = class_names.split(",")
+            for class_name in class_names:
+                mapping[re.sub("\W+", "", class_name)] = module
+
+    return mapping

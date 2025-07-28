@@ -19,7 +19,7 @@ analysis, Bayesian inverse analysis, and optimization.
 """
 from typing import TYPE_CHECKING
 
-from queens.utils.imports import import_class_from_class_module_map
+from queens.utils.imports import extract_type_checking_imports, import_class_from_class_module_map
 
 if TYPE_CHECKING:
     from queens.iterators.bbvi import BBVI
@@ -48,33 +48,8 @@ if TYPE_CHECKING:
     from queens.iterators.sobol_sequence import SobolSequence
 
 
-class_module_map = {
-    "BBVI": "bbvi",
-    "BMFIA": "bmfia",
-    "BMFMC": "bmfmc",
-    "ClassificationIterator": "classification",
-    "Data": "data",
-    "ElementaryEffects": "elementary_effects",
-    "Grid": "grid",
-    "HamiltonMonteCarlo": "hamiltonian_monte_carlo",
-    "LatinHypercubeSampling": "latin_hypercube_sampling",
-    "LeastSquares": "least_squares",
-    "MetropolisHastings": "metropolis_hastings",
-    "MetropolisHastingsPyMC": "metropolis_hastings_pymc",
-    "MonteCarlo": "monte_carlo",
-    "NUTS": "nuts",
-    "Optimization": "optimization",
-    "Points": "points",
-    "PolynomialChaos": "polynomial_chaos",
-    "ReinforcementLearning": "reinforcement_learning",
-    "RPVI": "reparameteriztion_based_variational",
-    "SequentialMonteCarlo": "sequential_monte_carlo",
-    "SequentialMonteCarloChopin": "sequential_monte_carlo_chopin",
-    "SobolIndex": "sobol_index",
-    "SobolIndexGPUncertainty": "sobol_index_gp_uncertainty",
-    "SobolSequence": "sobol_sequence",
-}
+class_module_map = extract_type_checking_imports(__file__)
 
 
 def __getattr__(name):
-    return import_class_from_class_module_map(name, class_module_map, __name__)
+    return import_class_from_class_module_map(name, class_module_map)

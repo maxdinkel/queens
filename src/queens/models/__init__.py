@@ -19,7 +19,7 @@ samples to model evaluations.
 """
 from typing import TYPE_CHECKING
 
-from queens.utils.imports import import_class_from_class_module_map
+from queens.utils.imports import extract_type_checking_imports, import_class_from_class_module_map
 
 if TYPE_CHECKING:
     from queens.models.adjoint import Adjoint
@@ -38,23 +38,9 @@ if TYPE_CHECKING:
     from queens.models.surrogates.jitted_gaussian_process import JittedGaussianProcess
     from queens.models.surrogates.variational_gaussian_process import VariationalGaussianProcess
 
-class_module_map = {
-    "Adjoint": "adjoint",
-    "BMFMC": "bmfmc",
-    "FiniteDifference": "finite_difference",
-    "BMFGaussian": "likelihoods.bmf_gaussian",
-    "BmfiaInterface": "likelihoods.bmf_gaussian.bmfia_interface",
-    "Gaussian": "likelihoods.gaussian",
-    "ReinforcementLearning": "reinforcement_learning.reinforcement_learning",
-    "Simulation": "simulation",
-    "GaussianBayesianNeuralNetwork": "likelihoods.bayesian_neural_network",
-    "GaussianNeuralNetwork": "likelihoods.gaussian_neural_network",
-    "GaussianProcess": "surrogates.gaussian_process",
-    "HeteroskedasticGaussianProcess": "surrogates.heteroskedastic_gaussian_process",
-    "JittedGaussianProcess": "surrogates.jitted_gaussian_process",
-    "VariationalGaussianProcess": "surrogates.variational_gaussian_process",
-}
+
+class_module_map = extract_type_checking_imports(__file__)
 
 
 def __getattr__(name):
-    return import_class_from_class_module_map(name, class_module_map, __name__)
+    return import_class_from_class_module_map(name, class_module_map)

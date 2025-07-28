@@ -22,7 +22,8 @@ from pathlib import Path
 from queens.utils import ascii_art
 from queens.utils.exceptions import CLIError
 from queens.utils.injector import inject
-from queens.utils.input_to_script import create_script_from_input_file
+
+# from queens.utils.input_to_script import create_script_from_input_file
 from queens.utils.io import print_pickled_data
 from queens.utils.logger_settings import reset_logging, setup_cli_logging
 from queens.utils.metadata import write_metadata_to_csv
@@ -149,7 +150,7 @@ def input_to_script_cli():
 
     args = sys.argv[1:]
     args = parser.parse_args(args)
-    create_script_from_input_file(args.input, args.output_dir, args.script_path)
+    # create_script_from_input_file(args.input, args.output_dir, args.script_path)
 
 
 @cli_logging

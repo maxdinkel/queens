@@ -18,18 +18,19 @@ import logging
 
 import numpy as np
 
-from queens.distributions import VALID_TYPES as VALID_DISTRIBUTION_TYPES
+# from queens.distributions import VALID_TYPES as VALID_DISTRIBUTION_TYPES
 from queens.distributions._distribution import Continuous
-from queens.parameters.random_fields import VALID_TYPES as VALID_FIELD_TYPES
+
+# from queens.parameters.random_fields import VALID_TYPES as VALID_FIELD_TYPES
 from queens.parameters.random_fields._random_field import RandomField
-from queens.utils.imports import get_module_class
+
+# from queens.utils.imports import get_module_class
 from queens.utils.logger_settings import log_init_args
 
-VALID_TYPES = VALID_DISTRIBUTION_TYPES | VALID_FIELD_TYPES
+# VALID_TYPES = VALID_DISTRIBUTION_TYPES | VALID_FIELD_TYPES
 
 _logger = logging.getLogger(__name__)
-
-
+'''
 def from_config_create_parameters(parameters_options, pre_processor=None):
     """Create a QUEENS parameter object from config.
 
@@ -51,7 +52,7 @@ def from_config_create_parameters(parameters_options, pre_processor=None):
             raise NotImplementedError(f"Parameter type '{parameter_class.__name__}' not supported.")
         joint_parameters_dict[parameter_name] = parameter_object
 
-    return Parameters(**joint_parameters_dict)
+    return Parameters(**joint_parameters_dict)'''
 
 
 def _add_parameters_keys(parameters_keys, parameter_name, dimension):
