@@ -18,7 +18,3 @@ Modules for preprocessing geometry from external simulation software.
 """
 
 from queens.external_geometries.fourc_dat import FourcDat
-
-VALID_TYPES = {
-    "fourc_dat": FourcDat,
-}
